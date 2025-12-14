@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  ANALYST
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String?
+  role         Role      @default(ANALYST)
+  avatarUrl    String?
+  accounts     Account[] @relation("AccountOwner")
+  tasks        Task[]    @relation("TaskAssignee")
+  sessions     Session[]
+  auditLogs    AuditLog[]
+  interactions Interaction[] @relation("InteractionAuthor")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  refreshToken String   @unique
+  userAgent    String?
+  ipAddress    String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id            String        @id @default(cuid())
+  name          String
+  industry      String
+  annualRevenue Int
+  status        String        @default("ACTIVE")
+  healthScore   Int           @default(75)
+  ownerId       String
+  contacts      Contact[]
+  interactions  Interaction[]
+  tasks         Task[]
+  insights      Insight[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  owner         User          @relation("AccountOwner", fields: [ownerId], references: [id])
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  accountId  String
+  name       String
+  title      String
+  email      String
+  phone      String?
+  lastActive DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Interaction {
+  id         String   @id @default(cuid())
+  accountId  String
+  type       String
+  summary    String
+  happenedAt DateTime
+  createdBy  String
+  createdAt  DateTime @default(now())
+  account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  author     User     @relation("InteractionAuthor", fields: [createdBy], references: [id], onDelete: SetNull)
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  status      String   @default("OPEN")
+  priority    Int      @default(2)
+  dueDate     DateTime
+  accountId   String
+  assigneeId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  assignee    User     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+}
+
+model Insight {
+  id         String   @id @default(cuid())
+  accountId  String
+  summary    String
+  type       String   @default("AI")
+  createdBy  String?
+  createdAt  DateTime @default(now())
+  account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  entity    String
+  entityId  String
+  action    String
+  diff      Json
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: SetNull)
+}

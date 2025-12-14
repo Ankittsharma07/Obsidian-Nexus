@@ -1,65 +1,120 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Shield, Sparkles, Workflow, LineChart, Compass } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function Home() {
+const features = [
+  {
+    title: "Unified Client Graph",
+    description: "Every signal from revenue, product, and success teams converges into a living dossier for each client.",
+    icon: Workflow
+  },
+  {
+    title: "AI Health Intelligence",
+    description: "Summaries and revival playbooks generated from telemetry, adoption gaps, and custom health formulas.",
+    icon: Sparkles
+  },
+  {
+    title: "Enterprise Guardrails",
+    description: "Fine-grained roles, audit trails, and hardened sessions keep high-stakes data compliant from day zero.",
+    icon: Shield
+  }
+];
+
+const stats = [
+  { label: "Signals processed", value: "2.7M+" },
+  { label: "In-flight accounts", value: "1,200" },
+  { label: "AI playbooks shipped", value: "480" }
+];
+
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="relative overflow-hidden px-6 pb-24 pt-24 lg:px-16">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-32 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-purple-600/20 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-indigo-500/10 blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_55%)]" />
+      </div>
+
+      <div className="mx-auto max-w-5xl text-center">
+        <span className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-1 text-xs uppercase tracking-[0.35em] text-purple-100">
+          OBSIDIAN · NEXUS
+        </span>
+        <h1 className="mt-8 text-5xl font-semibold leading-tight text-white md:text-6xl">
+          Reimagine <span className="gradient-text">client intelligence</span> with couture-grade SaaS aesthetics.
+        </h1>
+        <p className="mx-auto mt-6 max-w-3xl text-lg text-slate-300">
+          A full-stack Next.js 16 reference that blends glassmorphism, adaptive AI workflows, and hardened infra so you can
+          showcase how you design premium SaaS systems end-to-end.
+        </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Button asChild size="lg" className="px-10 text-base">
+            <Link href="/sign-in">
+              Launch Console <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="secondary"
+            size="lg"
+            className="border border-white/30 bg-white/5 px-8 text-base text-white hover:bg-white/20"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <Link href="https://github.com/your-handle/obsidian-nexus" target="_blank">
+              View Source
+            </Link>
+          </Button>
         </div>
-      </main>
+      </div>
+
+      <div className="mx-auto mt-12 grid max-w-4xl gap-4 rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:grid-cols-3">
+        {stats.map((stat) => (
+          <div key={stat.label} className="text-center">
+            <p className="text-3xl font-semibold text-white">{stat.value}</p>
+            <p className="text-xs uppercase tracking-[0.4em] text-slate-400">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <section className="mx-auto mt-20 grid max-w-6xl gap-8 md:grid-cols-3">
+        {features.map((feature) => (
+          <Card key={feature.title}>
+            <CardHeader className="flex items-center gap-4">
+              <div className="rounded-2xl bg-gradient-to-r from-purple-500/40 to-indigo-500/40 p-3 text-purple-100">
+                <feature.icon className="h-6 w-6" />
+              </div>
+              <CardTitle>{feature.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="text-slate-300">{feature.description}</CardContent>
+          </Card>
+        ))}
+      </section>
+
+      <section className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.35em] text-slate-300">
+              <LineChart className="h-3 w-3" /> telemetry
+            </div>
+            <CardTitle>Precision telemetry, curated visuals</CardTitle>
+          </CardHeader>
+          <CardContent className="text-slate-300">
+            Built with App Router, Server Actions, and cache tags to stream live data into luxe dashboards. AI summaries and
+            per-client health bars show how you think about narrative UX, not just CRUD.
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.35em] text-slate-300">
+              <Compass className="h-3 w-3" /> craft
+            </div>
+            <CardTitle>Royal-grade interactions</CardTitle>
+          </CardHeader>
+          <CardContent className="text-slate-300">
+            From password reveals and AI dialogs to the gradient chrome, every interaction reinforces a premium identity. It’s a
+            hiring artifact that feels like a live product, not a demo.
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }

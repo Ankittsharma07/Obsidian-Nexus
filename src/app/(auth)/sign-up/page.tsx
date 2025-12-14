@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { signupSchema } from "@/lib/validation";
@@ -65,7 +66,15 @@ export async function signUpAction(prevState: SignupState, formData: FormData): 
   redirect("/clients");
 }
 
-export default async function SignUpPage() {
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<SignUpForm action={signUpAction} />}>
+      <SignUpContent />
+    </Suspense>
+  );
+}
+
+async function SignUpContent() {
   const session = await auth();
   if (session?.user) {
     redirect("/clients");

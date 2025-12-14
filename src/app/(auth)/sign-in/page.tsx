@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { credentialsSchema } from "@/lib/validation";
@@ -33,7 +34,15 @@ export async function loginAction(prevState: LoginState, formData: FormData): Pr
   return prevState;
 }
 
-export default async function SignInPage() {
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<SignInForm action={loginAction} />}>
+      <SignInContent />
+    </Suspense>
+  );
+}
+
+async function SignInContent() {
   const session = await auth();
   if (session?.user) {
     redirect("/clients");

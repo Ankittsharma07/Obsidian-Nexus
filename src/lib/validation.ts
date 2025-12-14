@@ -22,7 +22,13 @@ export const accountFormSchema = z.object({
   healthScore: z.preprocess((value) => Number(value), z.number().min(0).max(100)).optional()
 });
 
-export const accountPatchSchema = accountFormSchema.partial({ name: false, industry: false });
+export const accountPatchSchema = accountFormSchema.partial({
+  id: true,
+  status: true,
+  annualRevenue: true,
+  ownerId: true,
+  healthScore: true
+});
 
 export const taskFormSchema = z.object({
   id: z.string().min(1).optional(),

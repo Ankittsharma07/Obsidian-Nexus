@@ -7,8 +7,13 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: ["*"]
-    },
-    cacheComponents: true
+    }
+  },
+
+  // Turbopack configuration (Next.js 16+)
+  turbopack: {
+    // Empty config to silence the warning
+    // Turbopack automatically handles Prisma optimization
   },
 
   images: {
@@ -16,18 +21,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "ui-avatars.com" }
     ]
-  },
-
-  // Reduce bundle size
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Don't bundle Prisma on client side
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        '@prisma/client': false,
-      };
-    }
-    return config;
   }
 };
 

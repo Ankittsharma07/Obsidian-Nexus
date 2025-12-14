@@ -9,6 +9,10 @@ import type { AccountWithMeta } from "@/types";
 import { prisma } from "@/lib/prisma";
 import { getMockAccounts } from "@/lib/mock-data";
 
+// Force dynamic rendering to avoid build-time database queries
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type MetricSnapshot = {
   revenue: { value: string; context: string };
   atRisk: { value: string; context: string };

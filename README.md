@@ -1,142 +1,79 @@
-<div align="center">
 
 ![Obsidian Nexus](./public/og.png)
 
 # Obsidian Nexus
-AI-enhanced client intelligence SaaS demonstrating senior-level full-stack craft with Next.js 16, Prisma, and shadcn/ui.
 
-</div>
+Enterprise-grade client intelligence SaaS demonstrating senior-level craft with Next.js, Prisma, and shadcn/ui.
 
-## 🧠 Product Overview
+## Project Overview
+Obsidian Nexus centralizes enterprise client data (accounts, contacts, interactions, tasks) and adds AI-generated health insights so revenue teams can prioritize the right work. The app pairs luxury SaaS visuals with hardened auth, RBAC, and deployment-ready infrastructure.
 
-Obsidian Nexus centralizes enterprise client data (accounts, contacts, interactions, tasks) and layers AI-generated health summaries so Ops teams can prioritize revenue work. The build targets production expectations:
+## Tech Stack
+- Next.js 16 App Router with Server Actions and Turbopack
+- TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Lucide icons
+- Prisma ORM + Supabase Postgres (connection pooling) + NextAuth v5
+- Google Generative AI SDK (Gemini 1.5) with deterministic fallbacks
+- ESLint 9, Vitest, Playwright, Docker, Vercel
 
-- Secure auth & RBAC via NextAuth 5 + Prisma adapter
-- Full CRUD with validation, optimistic UI, and audit-friendly server actions
-- Advanced filtering, pagination, loading, and error states
-- AI summaries via Google Gemini 1.5 (with graceful deterministic fallback)
-- Deployment-ready stack tailored for Vercel + managed Postgres
+## Key Features
+- Secure authentication with credential-based NextAuth v5, JWT sessions, and RBAC-aware layouts
+- AI health summaries, playbooks, and insight cards with graceful fallback copy
+- Full CRUD for accounts with optimistic UI, drawers, filtering, pagination, and audit-friendly server actions
+- Task orchestration, insight generation, and mock dataset fallback for DB-less previews
+- Deployment-hardened middleware, `.vercelignore`, standalone builds, and Supabase connection pooling defaults
 
-## ⚙️ Tech Stack
+## AI Capabilities
+Gemini 1.5 ingests account revenue, health, recent interactions, and open tasks to craft executive-ready summaries plus next-best actions. When the AI key is absent or rate limited, deterministic heuristics provide reliable guidance so the dashboard always feels alive.
 
-- **Framework**: Next.js 16 App Router (Server Actions, Route Handlers, PPR)
-- **Language**: TypeScript end-to-end
-- **UI**: Tailwind CSS 3.4, shadcn/ui, glassmorphism cards, dark purple gradients, micro-animations
-- **Auth**: NextAuth v5 (Credentials) with Prisma adapter + JWT sessions
-- **Database**: PostgreSQL + Prisma ORM + seed script
-- **AI**: Google Generative AI SDK for optional insights (`GEMINI_API_KEY`)
-- **Tooling**: ESLint 9, Vitest, Playwright, Tailwind CSS Animate, Sonner toasts, Framer Motion
+## Live URL
+https://obsidian-nexus-ochre.vercel.app/
 
-## 🏗️ Architecture Snapshot
+## GitHub Repo URL
+https://github.com/Ankittsharma07/Obsidian-Nexus
 
-```
-src/
-├─ app/
-│  ├─ (auth)/sign-in        # Auth-only layout and credential form
-│  ├─ (dashboard)/          # Protected layout + pages (clients, tasks, settings)
-│  ├─ api/                  # Route handlers (accounts, tasks, insights, auth)
-│  ├─ layout.tsx            # Root layout with fonts, providers, footer
-│  └─ page.tsx              # Marketing landing page
-├─ components/
-│  ├─ clients               # Table, drawers, filters, CTA button
-│  ├─ insights              # AI dialog + cards
-│  ├─ layout                # AppShell + footer
-│  ├─ shared                # Providers + dashboard filter context
-│  └─ ui                    # shadcn/ui primitives (button, card, dialog, table, etc.)
-├─ lib/
-│  ├─ auth.ts               # NextAuth config + Prisma adapter
-│  ├─ filters.ts            # Query builders + mock fallback logic
-│  ├─ validation.ts         # Zod schemas for forms/APIs
-│  ├─ prisma.ts             # Prisma client singleton
-│  ├─ ai.ts                 # Gemini helper w/ fallback summaries
-│  └─ mock-data.ts          # Local mock data for DB-less demos
-├─ prisma/
-│  ├─ schema.prisma         # PostgreSQL schema (users, accounts, tasks,…)
-│  └─ seed.ts               # Seed script for demo accounts/users
-└─ tests/
-   ├─ unit/filters.test.ts  # Vitest placeholder
-   └─ e2e/smoke.spec.ts     # Playwright scaffold
-```
+**This project is designed with real-world scalability, security, and enterprise UX in mind.**
 
-## 🔐 Feature Checklist
-
-- **Authentication & RBAC** – NextAuth credentials provider, Prisma adapter, session JWT callbacks injecting roles, protected route group.
-- **Full CRUD** – Server Actions + Prisma for account create/update/archive, client drawers via react-hook-form + zod validation, optimistic archive.
-- **Advanced UX** – Search + status filters, pagination-ready query state, skeleton loading, error boundaries, toast feedback.
-- **AI Insights** – `/api/insights` route summarizes accounts with Gemini (or fallback heuristics when key missing).
-- **Resilience** – Centralized error handling, `.env.example`, mock data fallback when `DATABASE_URL` absent so reviewers can explore instantly.
-
-## 🚀 Getting Started
-
+## Getting Started
 ```bash
-git clone https://github.com/your-handle/obsidian-nexus
-cd obsidian-nexus
+git clone https://github.com/Ankittsharma07/Obsidian-Nexus.git
+cd Obsidian-Nexus
 npm install
 cp .env.example .env.local
+```
+Update the variables below, then generate Prisma assets and run the dev server:
+```bash
 npx prisma generate
 npx prisma migrate dev
 npx prisma db seed
 npm run dev
 ```
+Visit http://localhost:3000 for the landing page and http://localhost:3000/sign-in for the console (seed user `ava@obsidian.dev` / `changeme`).
 
-Visit `http://localhost:3000` for the landing page and `http://localhost:3000/sign-in` for the console (seeded user: `ava@obsidian.dev` / `changeme`).
+## Environment Setup
+Populate the `.env.local` file with your secrets (database URLs, NextAuth settings, optional AI keys, etc.). Keep these values private—never commit actual secrets. Refer to `VERCEL_ENV_SETUP.md` for the complete variable checklist.
 
-> **Mock mode:** Without `DATABASE_URL`, the dashboard uses mock data defined in `src/lib/mock-data.ts`. This keeps the UX functional for reviewers even before provisioning Postgres.
-## dY"� Supabase/Postgres Integration
+## Development Workflow
+- `npm run lint` - ESLint 9 ruleset
+- `npm run test` - Vitest unit tests
+- `npm run test:e2e` - Playwright smoke tests
+- `npm run build` - Production build to validate server actions and Prisma types
 
-Already have a Supabase project? Use it as the production-grade Postgres backend:
+## Architectural Notes
+- App Router layouts split `(auth)` and `(dashboard)` areas with Suspense boundaries and server components.
+- Middleware guards `/clients`, `/tasks`, and `/settings` using lightweight cookie checks under 5 KB.
+- Prisma client is shared via a singleton (`src/lib/prisma.ts`) for both server actions and route handlers.
+- Mock data (`src/lib/mock-data.ts`) keeps demos functional when `DATABASE_URL` is absent locally.
+- Supabase pooling + `output: 'standalone'` in `next.config.ts` ensures Vercel deploys stay under size limits.
 
-1. Go to **Supabase ? Project Settings ? Database** and copy the *DB password* (different from the anon API key).
-2. Update `.env.local` with the provided project host and your password:
-   ```env
-   DATABASE_URL="postgresql://postgres:<YOUR_DB_PASSWORD>@db.wplzbfsgtumwjsxxyaku.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
-   DIRECT_URL="postgresql://postgres:<YOUR_DB_PASSWORD>@db.wplzbfsgtumwjsxxyaku.supabase.co:5432/postgres"
-   SUPABASE_URL="https://wplzbfsgtumwjsxxyaku.supabase.co"
-   SUPABASE_KEY="<your anon or service key>"
-   ```
-   A ready-to-edit `.env.local` already exists�swap `<YOUR_DB_PASSWORD>` and keep the provided key.
-3. Sync Prisma with Supabase:
-   ```bash
-   npx prisma migrate deploy
-   npx prisma db seed
-   npx prisma generate
-   ```
-4. Restart `npm run dev`. Client create/edit/archive/insight flows now persist in Supabase Postgres instead of the mock layer.
-## 🧪 Quality Gates
+## Deployment Checklist
+1. Push latest code to GitHub; Vercel auto-builds using standalone output.
+2. Configure environment variables across Production, Preview, and Development (use pooling URL and actual `NEXTAUTH_URL`).
+3. Run `npx prisma migrate deploy` and `npx prisma db seed` against Supabase before production traffic.
+4. Verify `/sign-in`, `/sign-up`, `/clients`, `/tasks`, and `/api/accounts` on the live URL.
 
-```bash
-npm run lint        # ESLint 9
-npm run test        # Vitest unit tests
-npm run test:e2e    # Playwright smoke tests
-npm run build       # Production build (ensures server actions + Prisma types pass)
-```
+## Personalization Tips
+- Update `src/components/layout/site-footer.tsx` with your own name, GitHub, and LinkedIn links before sharing.
+- Extend mock data or add providers to showcase performance/monitoring integrations as needed.
+- Swap `og.png` with a custom hero image to match your brand.
 
-## 📦 Deployment (Vercel)
-
-1. Provision managed Postgres (Supabase/Railway) and set `DATABASE_URL` + `DIRECT_URL`.
-2. Generate `NEXTAUTH_SECRET` (`openssl rand -hex 32`), set `NEXTAUTH_URL`, `GEMINI_API_KEY`, `REDIS_URL`.
-3. Run `npx prisma migrate deploy` + `npx prisma db seed`.
-4. Push to GitHub → connect Vercel project → set env vars → deploy.
-5. Update footer constants in `src/components/layout/site-footer.tsx` with **your name + GitHub + LinkedIn** before sharing the live URL.
-
-## 📚 References
-
-- Prisma schema → `prisma/schema.prisma`
-- Route handlers → `src/app/api/*/route.ts`
-- Server actions → `src/app/(dashboard)/clients/actions.ts`
-- Theme + Tailwind tokens → `tailwind.config.ts`
-- Environment template → `.env.example`
-
-## 🤝 Notes
-
-- Footer intentionally hard-coded for easy replacement (make sure to personalize!).
-- Additional documentation (architecture diagram, Loom walkthrough) can be layered easily under `/docs`.
-- Feel free to extend mock data or integrate Upstash/Redis for rate limiting if required by reviewers.
-
----
-
-Built with ❤️ to impress House of EdTech reviewers. Ping if you need extra enhancements or deployment help! 🚀
-
-
-
-
+Happy building and shipping!

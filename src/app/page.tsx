@@ -59,7 +59,7 @@ export default function LandingPage() {
             size="lg"
             className="border border-white/30 bg-white/5 px-8 text-base text-white hover:bg-white/20"
           >
-            <Link href="https://github.com/your-handle/obsidian-nexus" target="_blank">
+            <Link href="https://github.com/Ankittsharma07/obsidian-nexus" target="_blank">
               View Source
             </Link>
           </Button>
